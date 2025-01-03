@@ -99,7 +99,7 @@ GalleryPicProcessor/
  | **instant_80s**<br>80年代风格（偏暖）<br>![instant_80s](READMEIMG/polaroid_instant_80s.jpg) | **instant_90s**<br>90年代风格（自然）<br>![instant_90s](READMEIMG/polaroid_instant_90s.jpg) | **cross_process**<br>标准交叉冲洗<br>![cross_process](READMEIMG/polaroid_cross_process.jpg) |
  | **cross_light**<br>轻度交叉冲洗<br>![cross_light](READMEIMG/polaroid_cross_light.jpg) | **cross_strong**<br>强烈交叉冲洗<br>![cross_strong](READMEIMG/polaroid_cross_strong.jpg) | **cinematic_kodak**<br>柯达风格（暖色调）<br>![cinematic_kodak](READMEIMG/polaroid_cinematic_kodak.jpg) |
  | **cinematic_fuji**<br>富士风格（清爽）<br>![cinematic_fuji](READMEIMG/polaroid_cinematic_fuji.jpg) | **cinematic_vision3**<br>Vision3风格（自然）<br>![cinematic_vision3](READMEIMG/polaroid_cinematic_vision3.jpg) | **retro_60s**<br>60年代风格（高饱和）<br>![retro_60s](READMEIMG/polaroid_retro_60s.jpg) |
- | **retro_70s**<br>70年代风格（偏黄）<br>![retro_70s](READMEIMG/polaroid_retro_70s.jpg) | **retro_80s**<br>80年代风格（偏红）<br>![retro_80s](READMEIMG/polaroid_retro_80s.jpg) | |
+ | **retro_70s**<br>70年代风格（偏黄）<br>![retro_70s](READMEIMG/polaroid_retro_70s.jpg) | **retro_80s**<br>80年代风格（偏红）<br>![retro_80s](READMEIMG/polaroid_retro_80s.jpg) | | 
 
 ### 处理特点
 - 框架和色彩效果可自由组合
