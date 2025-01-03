@@ -437,12 +437,7 @@ class ImageEnhancer:
             self.image = self.image.convert('RGB')
     
     def apply_style(self, style_name, output_path):
-        """应用指定的样式并保存
-        
-        Args:
-            style_name (str): 样式名称，格式为 "frame_color" 或 "frame"
-            output_path (str): 输出文件路径
-        """
+        """应用指定的样式并保存"""
         print(f"\n正在处理: {style_name}")
         print("1. 加载图片...")
         
@@ -461,7 +456,7 @@ class ImageEnhancer:
         # 色彩处理器映射
         color_processors = {
             # 复古效果
-            'vintage': lambda img: self._apply_vintage_effect(img),
+            'vintage': lambda img: VintageEffect(img),  # 直接使用 VintageEffect 类
             # 黑白效果
             'bw_classic': lambda img: BWFilmStyle(img, film_type='classic'),
             'bw_high_contrast': lambda img: BWFilmStyle(img, film_type='high_contrast'),
@@ -492,7 +487,8 @@ class ImageEnhancer:
             color_processor = color_processors.get(color_style)
             if not color_processor:
                 raise ValueError(f"不支持的色彩风格: {color_style}")
-            processed_image = color_processor(processed_image).process()
+            processor = color_processor(processed_image)
+            processed_image = processor.process()  # 使用 process 方法
         
         # 2. 然后应用框架效果
         print(f"3. 应用{frame_style}框架...")
@@ -507,18 +503,6 @@ class ImageEnhancer:
         final_image.save(output_path, quality=100, subsampling=0)
         
         print("处理完成！")
-    
-    def _apply_vintage_effect(self, image):
-        """应用复古效果的辅助方法
-        
-        Args:
-            image (PIL.Image): 要处理的图片
-            
-        Returns:
-            PIL.Image: 处理后的图片
-        """
-        processor = VintageEffect(image)
-        return processor.process()
     
     @staticmethod
     def get_supported_styles():
