@@ -34,45 +34,57 @@ def process_image(input_path, output_path, frame_style, color_style=None):
 
 def generate_styles(frame_style, color_styles=None):
     """根据框架样式和色彩风格生成效果"""
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    input_dir = os.path.join(current_dir, "images", "input")
-    output_dir = os.path.join(current_dir, "images", "output")
-    
-    os.makedirs(input_dir, exist_ok=True)
-    os.makedirs(output_dir, exist_ok=True)
-    
-    input_image_path = os.path.join(input_dir, "input.jpg")
-    
-    if not os.path.exists(input_image_path):
-        print(f"请将要处理的图片放在以下目录，并命名为 input.jpg：")
-        print(input_dir)
-        return
+    try:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        input_dir = os.path.join(current_dir, "images", "input")
+        output_dir = os.path.join(current_dir, "images", "output")
+        
+        os.makedirs(input_dir, exist_ok=True)
+        os.makedirs(output_dir, exist_ok=True)
+        
+        input_image_path = os.path.join(input_dir, "input.jpg")
+        
+        if not os.path.exists(input_image_path):
+            print(f"请将要处理的图片放在以下目录，并命名为 input.jpg：")
+            print(input_dir)
+            return
 
-    # 检查框架样式是否有效
-    styles = ImageEnhancer.get_supported_styles()
-    if frame_style not in styles['frames']:
-        print(f"未知的框架样式: {frame_style}")
-        print(f"支持的框架样式: {', '.join(styles['frames'])}")
-        return
+        # 检查框架样式是否有效
+        styles = ImageEnhancer.get_supported_styles()
+        if frame_style not in styles['frames']:
+            print(f"未知的框架样式: {frame_style}")
+            print(f"支持的框架样式: {', '.join(styles['frames'])}")
+            return
 
-    # 首先生成原色彩效果
-    output_path = os.path.join(output_dir, f"{frame_style}.jpg")
-    process_image(input_image_path, output_path, frame_style)
+        # 首先生成原色彩效果
+        output_path = os.path.join(output_dir, f"{frame_style}.jpg")
+        process_image(input_image_path, output_path, frame_style)
 
-    # 如果没有指定色彩风格，则只保留原色彩效果
-    if not color_styles:
-        return
+        # 如果没有指定色彩风格，则只保留原色彩效果
+        if not color_styles:
+            return
 
-    # 检查并处理每个色彩风格
-    for color_style in color_styles:
-        if color_style not in styles['effects']:
-            print(f"未知的色彩风格: {color_style}")
-            print(f"支持的色彩风格: {', '.join(styles['effects'])}")
-            continue
-            
-        output_name = f"{frame_style}_{color_style}.jpg"
-        output_path = os.path.join(output_dir, output_name)
-        process_image(input_image_path, output_path, frame_style, color_style)
+        # 检查并处理每个色彩风格
+        total = len(color_styles) if color_styles else 1
+        print(f"\n开始处理，共 {total} 个效果...")
+        
+        for i, color_style in enumerate(color_styles or [None], 1):
+            try:
+                print(f"\n[{i}/{total}] ", end="")
+                if color_style not in styles['effects']:
+                    print(f"未知的色彩风格: {color_style}")
+                    print(f"支持的色彩风格: {', '.join(styles['effects'])}")
+                    continue
+                    
+                output_name = f"{frame_style}_{color_style}.jpg"
+                output_path = os.path.join(output_dir, output_name)
+                process_image(input_image_path, output_path, frame_style, color_style)
+            except Exception as e:
+                print(f"处理色彩风格 {color_style} 时出错: {str(e)}")
+                continue
+                
+    except Exception as e:
+        print(f"生成样式时出错: {str(e)}")
 
 def generate_all_combinations():
     """生成所有可能的框架和效果组合"""

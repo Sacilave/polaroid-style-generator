@@ -2,6 +2,9 @@
 
 一个处理图片的工具，给图片添加拍立得边框（或等距边框和无边框），以及多种复古和艺术效果风格
 
+> 新年快乐呀🎉 今天下午调了下去花火大会拍的图，想着加上点效果会更好，就顺便写了这个项目
+> 希望能帮助到你哦，后续可能会增加更多效果，或让现有效果更加高级些，看 Start 和心情吧 😋
+
 ## 目录
 > ！使用者直接看 [使用方法](#五使用方法)
 - [一、安装说明](#一安装说明)
@@ -87,19 +90,19 @@ GalleryPicProcessor/
 ## 三、功能特性
 
 ### 框架样式
-- `original`: 无框架，保持原始尺寸
-- `polaroid`: 经典拍立得框架（底部加宽）
-- `symmetric`: 对称边框（四边等宽）
+  | 🖼️ | 🎞️ | 📸 |
+  |:---:|:---:|:---:|
+  | **original**<br>无框架，保持原始尺寸<br>![original](./READMEIMG/original.jpg) | **polaroid**<br>经典拍立得框架（底部加宽）<br>![polaroid](./READMEIMG/polaroid.jpg) | **symmetric**<br>对称边框（四边等宽）<br>![symmetric](./READMEIMG/symmetric.jpg) |
 
-### 色彩效果
- |  |  |  |
- |:---:|:---:|:---:|
- | **原效果**<br>无任何滤镜效果<br>![polaroid](READMEIMG/polaroid.jpg) | **vintage**<br>经典复古褪色效果<br>![vintage](READMEIMG/polaroid_vintage.jpg) | **bw_classic**<br>经典黑白效果<br>![bw_classic](READMEIMG/polaroid_bw_classic.jpg) |
- | **bw_high_contrast**<br>高对比度黑白<br>![bw_high_contrast](READMEIMG/polaroid_bw_high_contrast.jpg) | **bw_soft**<br>柔和黑白<br>![bw_soft](READMEIMG/polaroid_bw_soft.jpg) | **instant_70s**<br>70年代风格（偏绿）<br>![instant_70s](READMEIMG/polaroid_instant_70s.jpg) |
- | **instant_80s**<br>80年代风格（偏暖）<br>![instant_80s](READMEIMG/polaroid_instant_80s.jpg) | **instant_90s**<br>90年代风格（自然）<br>![instant_90s](READMEIMG/polaroid_instant_90s.jpg) | **cross_process**<br>标准交叉冲洗<br>![cross_process](READMEIMG/polaroid_cross_process.jpg) |
- | **cross_light**<br>轻度交叉冲洗<br>![cross_light](READMEIMG/polaroid_cross_light.jpg) | **cross_strong**<br>强烈交叉冲洗<br>![cross_strong](READMEIMG/polaroid_cross_strong.jpg) | **cinematic_kodak**<br>柯达风格（暖色调）<br>![cinematic_kodak](READMEIMG/polaroid_cinematic_kodak.jpg) |
- | **cinematic_fuji**<br>富士风格（清爽）<br>![cinematic_fuji](READMEIMG/polaroid_cinematic_fuji.jpg) | **cinematic_vision3**<br>Vision3风格（自然）<br>![cinematic_vision3](READMEIMG/polaroid_cinematic_vision3.jpg) | **retro_60s**<br>60年代风格（高饱和）<br>![retro_60s](READMEIMG/polaroid_retro_60s.jpg) |
- | **retro_70s**<br>70年代风格（偏黄）<br>![retro_70s](READMEIMG/polaroid_retro_70s.jpg) | **retro_80s**<br>80年代风格（偏红）<br>![retro_80s](READMEIMG/polaroid_retro_80s.jpg) | | 
+ ### 色彩效果
+  | ❤️ | 🎉 | 👍 |
+  |:---:|:---:|:---:|
+  | **原图**<br>原始图片<br>![input](READMEIMG/input.jpg) | **无效果**<br>无任何滤镜效果<br>![polaroid](READMEIMG/polaroid.jpg) | **vintage**<br>经典复古褪色效果<br>![vintage](READMEIMG/polaroid_vintage.jpg) |
+  | **bw_classic**<br>经典黑白效果<br>![bw_classic](READMEIMG/polaroid_bw_classic.jpg) | **bw_high_contrast**<br>高对比度黑白<br>![bw_high_contrast](READMEIMG/polaroid_bw_high_contrast.jpg) | **bw_soft**<br>柔和黑白<br>![bw_soft](READMEIMG/polaroid_bw_soft.jpg) |
+  | **instant_70s**<br>70年代风格（偏绿）<br>![instant_70s](READMEIMG/polaroid_instant_70s.jpg) | **instant_80s**<br>80年代风格（偏暖）<br>![instant_80s](READMEIMG/polaroid_instant_80s.jpg) | **instant_90s**<br>90年代风格（自然）<br>![instant_90s](READMEIMG/polaroid_instant_90s.jpg) |
+  | **cross_process**<br>标准交叉冲洗<br>![cross_process](READMEIMG/polaroid_cross_process.jpg) | **cross_light**<br>轻度交叉冲洗<br>![cross_light](READMEIMG/polaroid_cross_light.jpg) | **cross_strong**<br>强烈交叉冲洗<br>![cross_strong](READMEIMG/polaroid_cross_strong.jpg) |
+  | **cinematic_kodak**<br>柯达风格（暖色调）<br>![cinematic_kodak](READMEIMG/polaroid_cinematic_kodak.jpg) | **cinematic_fuji**<br>富士风格（清爽）<br>![cinematic_fuji](READMEIMG/polaroid_cinematic_fuji.jpg) | **cinematic_vision3**<br>Vision3风格（自然）<br>![cinematic_vision3](READMEIMG/polaroid_cinematic_vision3.jpg) |
+  | **retro_60s**<br>60年代风格（高饱和）<br>![retro_60s](READMEIMG/polaroid_retro_60s.jpg) | **retro_70s**<br>70年代风格（偏黄）<br>![retro_70s](READMEIMG/polaroid_retro_70s.jpg) | **retro_80s**<br>80年代风格（偏红）<br>![retro_80s](READMEIMG/polaroid_retro_80s.jpg) |
 
 ### 处理特点
 - 框架和色彩效果可自由组合

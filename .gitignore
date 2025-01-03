@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+venv/
+ENV/
+
+# 项目特定
+images/input/*
+images/output/*
+!images/input/.gitkeep
+!images/output/.gitkeep
+READMEIMG/*
+!READMEIMG/*.jpg
+
+# IDE
+.vscode/
+.idea/
+*.swp 
