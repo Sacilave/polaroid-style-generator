@@ -1,5 +1,6 @@
 import os
 from image_enhancer import ImageEnhancer
+from PIL import Image
 
 def process_image(input_path, output_path, frame_style, color_style=None):
     """处理图片的辅助函数
@@ -106,6 +107,55 @@ def generate_random_combinations(count=5):
     for frame, effect in combinations:
         generate_styles(frame, [effect])
 
+def compress_directory_images(input_dir=None, quality=70):
+    """压缩指定目录中的所有图片
+    
+    Args:
+        input_dir (str, optional): 输入目录路径，如果为None则提示用户输入
+        quality (int): 压缩质量，范围1-100，默认70
+    """
+    if input_dir is None:
+        # 如果没有指定目录，提示用户输入
+        input_dir = input("请输入要压缩的图片目录路径: ").strip()
+    
+    if not input_dir:
+        print("错误：未指定目录路径")
+        return
+    
+    if not os.path.exists(input_dir):
+        print(f"错误：目录不存在: {input_dir}")
+        return
+    
+    # 获取所有图片文件
+    image_files = [f for f in os.listdir(input_dir) 
+                  if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+    
+    if not image_files:
+        print(f"未找到任何图片文件在目录: {input_dir}")
+        return
+    
+    print(f"\n开始压缩目录中的图片: {input_dir}")
+    print(f"找到 {len(image_files)} 个图片文件")
+    
+    for filename in image_files:
+        input_path = os.path.join(input_dir, filename)
+        
+        # 打开图片
+        try:
+            with Image.open(input_path) as img:
+                # 如果是PNG，先转换为RGB
+                if img.format == 'PNG':
+                    img = img.convert('RGB')
+                
+                # 压缩并保存
+                print(f"正在压缩: {filename}")
+                img.save(input_path, 'JPEG', quality=quality, optimize=True)
+        except Exception as e:
+            print(f"处理 {filename} 时出错: {str(e)}")
+            continue
+    
+    print("\n压缩完成！")
+
 if __name__ == "__main__":
     import argparse
     
@@ -121,17 +171,23 @@ if __name__ == "__main__":
                        help='生成所有可能的组合')
     parser.add_argument('--all-effects', '-ae', action='store_true',
                        help='生成指定框架下的所有色彩效果')
+    parser.add_argument('--compress', '-c', nargs='?', const=True,
+                       help='压缩指定目录下的图片，可选参数为目录路径')
+    parser.add_argument('--quality', '-q', type=int, default=70,
+                       help='压缩质量(1-100)，默认70')
     
     args = parser.parse_args()
     
-    if args.all:
+    if args.compress:
+        # 如果指定了目录路径，使用指定的路径；否则传入None让函数提示用户输入
+        input_dir = None if args.compress is True else args.compress
+        compress_directory_images(input_dir, args.quality)
+    elif args.all:
         generate_all_combinations()
     elif args.random:
         generate_random_combinations(args.random)
     elif args.all_effects:
-        # 获取所有支持的色彩效果
         styles = ImageEnhancer.get_supported_styles()
-        # 生成指定框架下的所有色彩效果
         generate_styles(args.frame, styles['effects'])
     else:
         generate_styles(args.frame, args.effects)
