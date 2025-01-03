@@ -24,15 +24,13 @@ class StyleProcessor(ABC):
         pass
     
     def apply_grain_effect(self, image, intensity=5, blend=0.03):
-        """应用颗粒感效果（优化版本）"""
+        """应用颗粒感效果（性能优化版本）"""
         try:
-            # 创建噪声数组
+            # 使用 numpy 批量生成噪声，避免逐像素操作
             width, height = image.size
-            noise = np.random.normal(0, intensity, (height, width))
-            noise = np.clip(noise + 128, 0, 255).astype(np.uint8)
-            
-            # 创建颗粒图层
-            grain = Image.fromarray(np.stack((noise,)*3, axis=-1))
+            noise = np.random.normal(0, intensity, (height, width, 3))
+            noise = np.clip(128 + noise, 0, 255).astype(np.uint8)
+            grain = Image.fromarray(noise)
             
             return Image.blend(image, grain, blend)
         except Exception as e:
@@ -59,15 +57,7 @@ class ImageEnhancer:
             self.image = self.image.convert('RGB')
     
     def apply_style(self, style_name, output_path):
-        """应用指定的样式并保存
-        
-        Args:
-            style_name (str): 样式名称
-            output_path (str): 输出路径
-            
-        Raises:
-            ValueError: 当样式名称格式不正确时
-        """
+        """应用指定的样式并保存（性能优化版本）"""
         if not style_name:
             raise ValueError("样式名称不能为空")
         if not output_path:
@@ -115,16 +105,20 @@ class ImageEnhancer:
         
         processed_image = self.image
         
-        # 1. 首先应用色彩效果（如果有）
+        # 如果需要应用色彩效果，先转换为numpy数组进行处理
         if color_style:
             print(f"2. 应用{color_style}色彩效果...")
+            # 转换为numpy数组
+            img_array = np.array(processed_image)
+            
+            # 应用色彩效果
             color_processor = color_processors.get(color_style)
             if not color_processor:
                 raise ValueError(f"不支持的色彩风格: {color_style}")
-            processor = color_processor(processed_image)
+            processor = color_processor(Image.fromarray(img_array))
             processed_image = processor.process()
         
-        # 2. 然后应用框架效果
+        # 应用框架效果
         print(f"3. 应用{frame_style}框架...")
         frame_processor = frame_processors.get(frame_style)
         if not frame_processor:
@@ -132,10 +126,16 @@ class ImageEnhancer:
         
         final_image = frame_processor(processed_image).process()
         
-        # 3. 保存结果
+        # 优化保存过程
         print("4. 保存结果...")
         try:
-            final_image.save(output_path, quality=100, subsampling=0)
+            final_image.save(
+                output_path, 
+                'JPEG',
+                quality=95,  # 稍微降低质量以提高性能
+                optimize=True,  # 启用优化
+                progressive=True  # 使用渐进式JPEG
+            )
             print("处理完成！")
         except Exception as e:
             raise IOError(f"保存图片时出错: {str(e)}")
@@ -158,28 +158,27 @@ class ImageEnhancer:
 class VintageEffect(StyleProcessor):
     """复古效果处理器"""
     def process(self):
-        """应用复古效果"""
-        image = self.original_image.copy()
+        """应用复古效果（性能优化版本）"""
+        # 转换为numpy数组进行处理
+        img_array = np.array(self.original_image)
         
-        # 1. 降低饱和度（模拟褪色）
+        # 一次性调整RGB通道
+        img_array = img_array.astype(np.float32)
+        img_array[:, :, 0] = np.clip(img_array[:, :, 0] * 1.05, 0, 255)  # R
+        img_array[:, :, 2] = img_array[:, :, 2] * 0.95  # B
+        
+        image = Image.fromarray(img_array.astype(np.uint8))
+        
+        # 其他增强操作
         enhancer = ImageEnhance.Color(image)
         image = enhancer.enhance(0.65)
         
-        # 2. 轻微降低对比度（模拟老照片）
         enhancer = ImageEnhance.Contrast(image)
         image = enhancer.enhance(0.85)
         
-        # 3. 轻微调整色温（略微偏暖）
-        r, g, b = image.split()
-        r = r.point(lambda i: min(int(i * 1.05), 255))
-        b = b.point(lambda i: int(i * 0.95))
-        image = Image.merge('RGB', (r, g, b))
-        
-        # 4. 轻微提亮（模拟曝光）
         enhancer = ImageEnhance.Brightness(image)
         image = enhancer.enhance(1.1)
         
-        # 5. 添加颗粒感
         return self.apply_grain_effect(image)
 
 class BWFilmStyle(StyleProcessor):
