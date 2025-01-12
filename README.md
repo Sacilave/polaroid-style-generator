@@ -144,13 +144,13 @@ python compress_images.py
 ### 1. 使用批处理脚本（推荐）
 
 提供了两个批处理脚本供选择：
-- `RUN.bat` - 中文界面
+- `点我运行.bat` - 中文界面
 - `RUN_EN.bat` - English interface
 
 #### 使用步骤：
 1. 将要处理的图片命名为 `input.jpg`
 2. 放入 `images/input/` 目录
-3. 双击运行 `RUN.bat` 或 `RUN_EN.bat`
+3. 双击运行 `点我运行.bat` 或 `RUN_EN.bat`
 4. 根据菜单提示进行操作
 
 #### 功能菜单：
