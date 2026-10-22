@@ -1,17 +1,23 @@
+<div align="center">
+
 # Polaroid Style Generator
 
-<p align="center">
+<p>
   <strong>一个处理图片的工具，给图片添加拍立得边框（或等距边框和无边框），以及多种复古和艺术效果风格</strong>
 </p>
 
-<p align="center">
+<p>
   <img src="https://img.shields.io/badge/Python-3.8+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.8+">
   <img src="https://img.shields.io/badge/License-MIT-green.svg?style=flat-square" alt="License: MIT">
   <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome">
 </p>
 
-> 新年快乐呀🎉 今天下午调了下去花火大会拍的图，想着加上点效果会更好，就顺便写了这个项目  
-> 希望能帮助到你哦，后续可能会增加更多效果，或让现有效果更加高级些，看 Star 和心情吧 😋
+<p>
+  <sub>新年快乐呀🎉 今天下午调了下去花火大会拍的图，想着加上点效果会更好，就顺便写了这个项目</sub><br>
+  <sub>希望能帮助到你哦，后续可能会增加更多效果，或让现有效果更加高级些，看 Star 和心情吧 😋</sub>
+</p>
+
+</div>
 
 ---
 
