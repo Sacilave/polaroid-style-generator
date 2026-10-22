@@ -1,36 +1,43 @@
+# -*- coding: utf-8 -*-
+from pathlib import Path
 from PIL import Image
-import os
 
-def compress_images(input_dir, quality=70):
-    """压缩指定目录中的所有图片
-    
-    Args:
-        input_dir (str): 输入目录路径
-        quality (int): 压缩质量，范围1-100，默认70
-    """
-    if not os.path.exists(input_dir):
-        print(f"目录不存在: {input_dir}")
-        return
-    
-    # 获取所有图片文件
-    image_files = [f for f in os.listdir(input_dir) 
-                  if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
-    
-    for filename in image_files:
-        input_path = os.path.join(input_dir, filename)
-        
-        # 打开图片
-        with Image.open(input_path) as img:
-            # 如果是PNG，先转换为RGB
-            if img.format == 'PNG':
-                img = img.convert('RGB')
-            
-            # 压缩并保存
-            print(f"正在压缩: {filename}")
-            img.save(input_path, 'JPEG', quality=quality, optimize=True)
-    
-    print("压缩完成！")
+SUPPORTED = ('.jpg', '.jpeg', '.png', '.webp', '.bmp', '.tif', '.tiff')
 
-if __name__ == "__main__":
-    dir = ""  # 要压缩的图片目录
-    compress_images(dir)
+
+def compress_images(input_dir, quality=85, recursive=True):
+    root = Path(input_dir)
+    if not root.exists():
+        print(f'目录不存在: {root}')
+        return False
+    files = sorted([p for p in (root.rglob('*') if recursive else root.iterdir()) if p.is_file() and p.suffix.lower() in SUPPORTED])
+    if not files:
+        print('未找到图片文件')
+        return False
+    quality = max(1, min(100, int(quality)))
+    for path in files:
+        try:
+            with Image.open(path) as img:
+                rgb = img.convert('RGB')
+                ext = path.suffix.lower()
+                print(f'正在压缩: {path}')
+                if ext in ('.jpg', '.jpeg'):
+                    rgb.save(path, 'JPEG', quality=quality, optimize=True, progressive=True)
+                elif ext == '.png':
+                    rgb.save(path, 'PNG', optimize=True)
+                elif ext == '.webp':
+                    rgb.save(path, 'WEBP', quality=quality, method=6)
+                elif ext in ('.tif', '.tiff'):
+                    rgb.save(path, 'TIFF', compression='tiff_lzw')
+                elif ext == '.bmp':
+                    rgb.save(path, 'BMP')
+        except Exception as e:
+            print(f'处理失败 {path}: {e}')
+    print('压缩完成！')
+    return True
+
+
+if __name__ == '__main__':
+    directory = input('请输入要压缩的目录: ').strip().strip('"')
+    q = input('请输入质量 1-100，直接回车默认85: ').strip()
+    compress_images(directory, int(q) if q.isdigit() else 85)

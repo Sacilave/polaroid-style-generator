@@ -1,4 +1,29 @@
-# Python
+# ==========================================
+# 1. 本地归档与敏感备份（高优先级拦截）
+# ==========================================
+_archive/
+archive/
+*.zip
+*.tar.gz
+*.7z
+
+# ==========================================
+# 2. 运行时媒体与照片资产（防泄漏）
+# ==========================================
+images/input/*
+images/output/*
+images/converted/*
+!images/input/.gitkeep
+!images/output/.gitkeep
+!images/converted/.gitkeep
+
+# 文档固定演示用图白名单（README 必需，其余排除）
+READMEIMG/*
+!READMEIMG/*.jpg
+
+# ==========================================
+# 3. Python 运行与构建缓存
+# ==========================================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -7,15 +32,11 @@ __pycache__/
 venv/
 ENV/
 
-# 项目特定
-images/input/*
-images/output/*
-!images/input/.gitkeep
-!images/output/.gitkeep
-READMEIMG/*
-!READMEIMG/*.jpg
-
-# IDE
+# ==========================================
+# 4. 编辑器与系统临时文件
+# ==========================================
 .vscode/
 .idea/
-*.swp 
+*.swp
+*.DS_Store
+Thumbs.db

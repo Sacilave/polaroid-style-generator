@@ -1,38 +1,41 @@
 # Polaroid Style Generator
 
-一个处理图片的工具，给图片添加拍立得边框（或等距边框和无边框），以及多种复古和艺术效果风格
+<p align="center">
+  <strong>一个处理图片的工具，给图片添加拍立得边框（或等距边框和无边框），以及多种复古和艺术效果风格</strong>
+</p>
 
-> 新年快乐呀🎉 今天下午调了下去花火大会拍的图，想着加上点效果会更好，就顺便写了这个项目
-> 希望能帮助到你哦，后续可能会增加更多效果，或让现有效果更加高级些，看 Start 和心情吧 😋
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.8+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.8+">
+  <img src="https://img.shields.io/badge/License-MIT-green.svg?style=flat-square" alt="License: MIT">
+  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome">
+</p>
 
-## 目录
-> ！使用者直接看 [使用方法](#5-使用方法)
-- [1. 安装说明](#1-安装说明)
-- [2. 项目结构](#2-项目结构)
-- [3. 功能特性](#3-功能特性)
+> 新年快乐呀🎉 今天下午调了下去花火大会拍的图，想着加上点效果会更好，就顺便写了这个项目  
+> 希望能帮助到你哦，后续可能会增加更多效果，或让现有效果更加高级些，看 Star 和心情吧 😋
+
+---
+
+## 📑 目录
+
+> 💡 **使用者直接看 [使用方法](#-5-使用方法)**
+
+- [1. 安装说明](#-1-安装说明)
+- [2. 项目结构](#-2-项目结构)
+- [3. 功能特性](#-3-功能特性)
   - [框架样式](#框架样式)
   - [色彩效果](#色彩效果)
-    1. 复古效果
-    2. 黑白胶片
-    3. 即时显影
-    4. 交叉冲洗
-    5. 电影胶片
-    6. 复古彩色
   - [处理特点](#处理特点)
-- [4. 内置图片压缩工具](#4-内置图片压缩工具)
-- [5. 使用方法](#5-使用方法)
-- [6. 技术实现](#6-技术实现)
-  - [核心类](#核心类)
-  - [扩展性设计](#扩展性设计)
-- [7. 维护说明](#7-维护说明)
-  - [添加新框架](#添加新框架)
-  - [添加新色彩效果](#添加新色彩效果)
-  - [代码规范](#代码规范)
-- [8. 贡献指南](#8-贡献指南)
-- [9. 命令行使用](#9-命令行使用)
-- [10. License](#10-license)
+- [4. 内置图片压缩工具](#-4-内置图片压缩工具)
+- [5. 使用方法](#-5-使用方法)
+- [6. 技术实现](#-6-技术实现)
+- [7. 维护说明](#-7-维护说明)
+- [8. 贡献指南](#-8-贡献指南)
+- [9. 命令行使用](#-9-命令行使用)
+- [10. License](#-10-license)
 
-## 1. 安装说明
+---
+
+## 📦 1. 安装说明
 
 ### 1. 下载项目
 ```bash
@@ -76,33 +79,43 @@ python main.py -f polaroid
 python main.py --help
 ```
 
-## 2. 项目结构
+---
 
-```
-GalleryPicProcessor/
+## 📂 2. 项目结构
+
+```text
+PolaroidStyleGenerator/
 ├── main.py              # 主程序入口
 ├── image_enhancer.py    # 图片处理核心类
+├── annotation_worker.py # 拍立得文字排版渲染引擎（独立隔离子进程）
+├── compress_images.py   # 内置图片压缩工具
+├── run.bat              # Windows 启动脚本
+├── 点我运行.bat          # Windows 双击运行入口
+├── requirements.txt     # 项目依赖配置
 └── images/              # 图片目录
     ├── input/           # 输入图片目录
-    └── output/          # 输出图片目录
+    ├── output/          # 输出图片目录
+    └── converted/       # 格式转换导出目录
 ```
 
-## 3. 功能特性
+---
+
+## ✨ 3. 功能特性
 
 ### 框架样式
-  | 🖼️ | 🎞️ | 📸 |
-  |:---:|:---:|:---:|
-  | **original**<br>无框架，保持原始尺寸<br>![original](./READMEIMG/original.jpg) | **polaroid**<br>经典拍立得框架（底部加宽）<br>![polaroid](./READMEIMG/polaroid.jpg) | **symmetric**<br>对称边框（四边等宽）<br>![symmetric](./READMEIMG/symmetric.jpg) |
+| 🖼️ | 🎞️ | 📸 |
+|:---:|:---:|:---:|
+| **original**<br>无框架，保持原始尺寸<br>![original](./READMEIMG/original.jpg) | **polaroid**<br>经典拍立得框架（底部加宽）<br>![polaroid](./READMEIMG/polaroid.jpg) | **symmetric**<br>对称边框（四边等宽）<br>![symmetric](./READMEIMG/symmetric.jpg) |
 
- ### 色彩效果
-  | ❤️ | 🎉 | 👍 |
-  |:---:|:---:|:---:|
-  | **原图**<br>原始图片<br>![input](READMEIMG/input.jpg) | **无效果**<br>无任何滤镜效果<br>![polaroid](READMEIMG/polaroid.jpg) | **vintage**<br>经典复古褪色效果<br>![vintage](READMEIMG/polaroid_vintage.jpg) |
-  | **bw_classic**<br>经典黑白效果<br>![bw_classic](READMEIMG/polaroid_bw_classic.jpg) | **bw_high_contrast**<br>高对比度黑白<br>![bw_high_contrast](READMEIMG/polaroid_bw_high_contrast.jpg) | **bw_soft**<br>柔和黑白<br>![bw_soft](READMEIMG/polaroid_bw_soft.jpg) |
-  | **instant_70s**<br>70年代风格（偏绿）<br>![instant_70s](READMEIMG/polaroid_instant_70s.jpg) | **instant_80s**<br>80年代风格（偏暖）<br>![instant_80s](READMEIMG/polaroid_instant_80s.jpg) | **instant_90s**<br>90年代风格（自然）<br>![instant_90s](READMEIMG/polaroid_instant_90s.jpg) |
-  | **cross_process**<br>标准交叉冲洗<br>![cross_process](READMEIMG/polaroid_cross_process.jpg) | **cross_light**<br>轻度交叉冲洗<br>![cross_light](READMEIMG/polaroid_cross_light.jpg) | **cross_strong**<br>强烈交叉冲洗<br>![cross_strong](READMEIMG/polaroid_cross_strong.jpg) |
-  | **cinematic_kodak**<br>柯达风格（暖色调）<br>![cinematic_kodak](READMEIMG/polaroid_cinematic_kodak.jpg) | **cinematic_fuji**<br>富士风格（清爽）<br>![cinematic_fuji](READMEIMG/polaroid_cinematic_fuji.jpg) | **cinematic_vision3**<br>Vision3风格（自然）<br>![cinematic_vision3](READMEIMG/polaroid_cinematic_vision3.jpg) |
-  | **retro_60s**<br>60年代风格（高饱和）<br>![retro_60s](READMEIMG/polaroid_retro_60s.jpg) | **retro_70s**<br>70年代风格（偏黄）<br>![retro_70s](READMEIMG/polaroid_retro_70s.jpg) | **retro_80s**<br>80年代风格（偏红）<br>![retro_80s](READMEIMG/polaroid_retro_80s.jpg) |
+### 色彩效果
+| ❤️ | 🎉 | 👍 |
+|:---:|:---:|:---:|
+| **原图**<br>原始图片<br>![input](READMEIMG/input.jpg) | **无效果**<br>无任何滤镜效果<br>![polaroid](READMEIMG/polaroid.jpg) | **vintage**<br>经典复古褪色效果<br>![vintage](READMEIMG/polaroid_vintage.jpg) |
+| **bw_classic**<br>经典黑白效果<br>![bw_classic](READMEIMG/polaroid_bw_classic.jpg) | **bw_high_contrast**<br>高对比度黑白<br>![bw_high_contrast](READMEIMG/polaroid_bw_high_contrast.jpg) | **bw_soft**<br>柔和黑白<br>![bw_soft](READMEIMG/polaroid_bw_soft.jpg) |
+| **instant_70s**<br>70年代风格（偏绿）<br>![instant_70s](READMEIMG/polaroid_instant_70s.jpg) | **instant_80s**<br>80年代风格（偏暖）<br>![instant_80s](READMEIMG/polaroid_instant_80s.jpg) | **instant_90s**<br>90年代风格（自然）<br>![instant_90s](READMEIMG/polaroid_instant_90s.jpg) |
+| **cross_process**<br>标准交叉冲洗<br>![cross_process](READMEIMG/polaroid_cross_process.jpg) | **cross_light**<br>轻度交叉冲洗<br>![cross_light](READMEIMG/polaroid_cross_light.jpg) | **cross_strong**<br>强烈交叉冲洗<br>![cross_strong](READMEIMG/polaroid_cross_strong.jpg) |
+| **cinematic_kodak**<br>柯达风格（暖色调）<br>![cinematic_kodak](READMEIMG/polaroid_cinematic_kodak.jpg) | **cinematic_fuji**<br>富士风格（清爽）<br>![cinematic_fuji](READMEIMG/polaroid_cinematic_fuji.jpg) | **cinematic_vision3**<br>Vision3风格（自然）<br>![cinematic_vision3](READMEIMG/polaroid_cinematic_vision3.jpg) |
+| **retro_60s**<br>60年代风格（高饱和）<br>![retro_60s](READMEIMG/polaroid_retro_60s.jpg) | **retro_70s**<br>70年代风格（偏黄）<br>![retro_70s](READMEIMG/polaroid_retro_70s.jpg) | **retro_80s**<br>80年代风格（偏红）<br>![retro_80s](READMEIMG/polaroid_retro_80s.jpg) |
 
 ### 处理特点
 - 框架和色彩效果可自由组合
@@ -111,14 +124,14 @@ GalleryPicProcessor/
 - 细腻的颗粒感效果
 - 独特的色彩处理
 
-## 4. 内置图片压缩工具
+---
+
+## 🗜️ 4. 内置图片压缩工具
 
 ### 方法一、
-
 [点击看直接使用的指令](#压缩图片-1)
 
 ### 方法二、
-
 先在 `compress_images.py` 中设置要压缩的目录，然后运行脚本：
 
 ```python
@@ -131,26 +144,30 @@ compress_images(dir)
 python compress_images.py
 ```
 
+> [!WARNING]
+> **！注意 ！会直接覆盖原图，记得提前备份！！！**
+
 压缩工具特点：
-- **！注意 ！会直接覆盖原图，记得提前备份！！！**
 - 支持 JPG、JPEG、PNG 格式
 - 自动将 PNG 转换为 JPEG 以获得更好的压缩效果
 - 可调节压缩质量（默认70%）
 - 保持原始文件名和位置
 - 优化文件大小
 
-## 5. 使用方法
+---
+
+## 🚀 5. 使用方法
 
 ### 1. 使用批处理脚本（推荐）
 
-提供了两个批处理脚本供选择：
-- `点我运行.bat` - 中文界面
-- `RUN_EN.bat` - English interface
+提供了批处理脚本供选择：
+- `点我运行.bat` - Windows 一键中文菜单交互入口
+- `run.bat` - 命令行快捷启动入口
 
 #### 使用步骤：
-1. 将要处理的图片命名为 `input.jpg`
+1. 将要处理的图片命名为 `input.jpg`（或直接将多张图片拖入 `images/input/` 目录）
 2. 放入 `images/input/` 目录
-3. 双击运行 `点我运行.bat` 或 `RUN_EN.bat`
+3. 双击运行 `点我运行.bat` 或 `run.bat`
 4. 根据菜单提示进行操作
 
 #### 功能菜单：
@@ -172,9 +189,11 @@ python compress_images.py
 
 ### 2. 使用命令行（高级用户）
 
-> 如果您更习惯使用命令行，可以继续查看 [命令行使用](#9-命令行使用)
+> 如果您更习惯使用命令行，可以继续查看 [命令行使用](#-9-命令行使用)
 
-## 6. 技术实现
+---
+
+## 🛠️ 6. 技术实现
 
 ### 核心类
 - `StyleProcessor`: 样式处理器基类
@@ -193,7 +212,9 @@ python compress_images.py
 - 支持轻松添加新的处理器
 - 灵活的参数配置系统
 
-## 7. 维护说明
+---
+
+## 🔧 7. 维护说明
 
 ### 添加新框架
 1. 在 `image_enhancer.py` 中创建新的框架处理器类
@@ -213,7 +234,9 @@ python compress_images.py
 - 添加适当的注释和文档字符串
 - 使用类型提示增强代码可读性
 
-## 8. 贡献指南
+---
+
+## 🤝 8. 贡献指南
 
 欢迎提交 Pull Request 或 Issue，建议遵循以下原则：
 - 保持代码风格一致
@@ -221,7 +244,9 @@ python compress_images.py
 - 更新相关文档
 - 提供效果示例
 
-## 9. 命令行使用
+---
+
+## 💻 9. 命令行使用
 
 > 命令行怎么打开应该不用说了吧，如果真不知道... 上网搜搜吧孩子 (´。＿。｀)
 
@@ -229,22 +254,22 @@ python compress_images.py
 ```bash
 python main.py -f [frame] -e [effect]  
 ```
-    参数说明：
-    frame: polaroid（拍立得）, symmetric（对称边框）, original（原始）; 
-    effect: 
-        不填：原色效果
-        vintage（复古）, 
-        bw_classic（经典黑白）, 
-        instant_70s（70年代即时）, 
-        cinematic_kodak（电影胶片柯达）, 
-        cinematic_fuji（电影胶片富士）, 
-        cinematic_vision3（电影胶片Vision3）, 
-        retro_60s（60年代复古）, 
-        retro_70s（70年代复古）, 
-        retro_80s（80年代复古）, 
-        cross_process（交叉处理）, 
-        cross_light（轻度交叉处理）, 
-        cross_strong（强烈交叉处理）
+参数说明：
+- `frame`: `polaroid`（拍立得）, `symmetric`（对称边框）, `original`（原始）; 
+- `effect`: 
+  - 不填：原色效果
+  - `vintage`（复古）
+  - `bw_classic`（经典黑白）
+  - `instant_70s`（70年代即时）
+  - `cinematic_kodak`（电影胶片柯达）
+  - `cinematic_fuji`（电影胶片富士）
+  - `cinematic_vision3`（电影胶片Vision3）
+  - `retro_60s`（60年代复古）
+  - `retro_70s`（70年代复古）
+  - `retro_80s`（80年代复古）
+  - `cross_process`（交叉处理）
+  - `cross_light`（轻度交叉处理）
+  - `cross_strong`（强烈交叉处理）
 
 #### 使用拍立得框架生成原始效果
 ```bash
@@ -283,7 +308,8 @@ python main.py -c path/to/directory
 python main.py -c path/to/directory -q 80
 ```
 
-## 10. License
-This project is proprietary software.
-All rights reserved. See [LICENSE](LICENSE) for details.
-Unauthorized copying, modification, distribution, or use is strictly prohibited.
+---
+
+## 📄 10. License
+
+本项目遵循 [MIT License](LICENSE) 开源许可协议。保留所有版权。
