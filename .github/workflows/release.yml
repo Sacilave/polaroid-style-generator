@@ -1,0 +1,77 @@
+name: Release Packaging
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Syntax Check
+        run: |
+          python -m py_compile main.py image_enhancer.py annotation_worker.py compress_images.py
+
+      - name: Prepare Clean Release Package
+        run: |
+          VERSION=${GITHUB_REF_NAME:-v2.0.0}
+          PKG_NAME="PolaroidStyleGenerator-${VERSION}"
+          mkdir -p "${PKG_NAME}/images/input" "${PKG_NAME}/images/output" "${PKG_NAME}/images/converted"
+          
+          # 复制核心源码与文档
+          cp main.py "${PKG_NAME}/"
+          cp image_enhancer.py "${PKG_NAME}/"
+          cp annotation_worker.py "${PKG_NAME}/"
+          cp compress_images.py "${PKG_NAME}/"
+          cp requirements.txt "${PKG_NAME}/"
+          cp run.bat "${PKG_NAME}/"
+          cp 点我运行.bat "${PKG_NAME}/"
+          cp README.md "${PKG_NAME}/"
+          cp LICENSE "${PKG_NAME}/"
+          
+          # 保留图片目录骨架
+          touch "${PKG_NAME}/images/input/.gitkeep"
+          touch "${PKG_NAME}/images/output/.gitkeep"
+          touch "${PKG_NAME}/images/converted/.gitkeep"
+          
+          # 打包为 zip
+          zip -r "${PKG_NAME}.zip" "${PKG_NAME}"
+          echo "PACKAGE_PATH=${PKG_NAME}.zip" >> $GITHUB_ENV
+          echo "RELEASE_VERSION=${VERSION}" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: Polaroid Style Generator ${{ env.RELEASE_VERSION }}
+          files: ${{ env.PACKAGE_PATH }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+          body: |
+            ### 🚀 开箱即用版本发布 / Release Overview
+
+            #### 📦 使用指南 / Quick Start
+            1. 下载下方的 `PolaroidStyleGenerator-${{ env.RELEASE_VERSION }}.zip` 并解压。
+            2. 将待处理照片放入 `images/input/` 文件夹（支持多图批量处理）。
+            3. 双击 `点我运行.bat` 或 `run.bat` 启动交互式控制台菜单。
+
+            #### ✨ 本版本核心特性 / Highlights
+            - **四字段排版引擎**：拍立得边框支持照片标题、版权署名、拍摄时间戳、备注说明左右分栏排版。
+            - **进程级防崩溃隔离**：新增 `annotation_worker` 独立渲染子进程，杜绝 Windows 字体渲染闪退与 CJK 乱码。
+            - **批量多格式处理**：支持 `jpg / jpeg / png / webp / bmp / tif / tiff`，自动保留原文件名与扩展名。
+            - **图片格式互转**：主菜单内置全格式一键批量互转。
+            - **开源许可**：全面采用宽松自由的 **MIT License**。
